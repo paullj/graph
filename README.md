@@ -2,12 +2,23 @@
 
 > ℹ️ A graph layout engine and language
 
+### Example:
+
+```
+graph down
+a --> b
+b --> d
+a --> c
+c --> d
+
+```
+
 ### Goals of this project:
 
 - Language that is easy to read and write by humans or machines
 - Parser that can report errors clearly
-- Expressive enough to represent any graph
-- Layout engine that can render the graph in a visually pleasing way
+- Expressive enough to represent many graphs
+- Renders graphs that look nice
 - Fast enough to render large graphs
 - Portable enough to run as a CLI, rust library, python library, or in a web browser
 

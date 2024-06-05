@@ -25,7 +25,9 @@ pub fn parse_from_string(contents: &str) -> Result<Graph, Error<Rule>> {
             Rule::definition => {
                 for definition_pair in graph_pair.into_inner() {
                     match definition_pair.as_rule() {
-                        Rule::direction => println!("Direction: {}", definition_pair.as_str()),
+                        Rule::direction => {
+                            // println!("Direction: {}", definition_pair.as_str())
+                        }
                         _ => {}
                     }
                 }
