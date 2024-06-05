@@ -17,6 +17,8 @@ petgraph = "*"
 resvg = "0.42.0"
 rust-sugiyama = "0.2.0"
 svg = "*"
+rusttype = "*"
+base64 = "0.22.1"
 
 [dev-dependencies]
 rstest = "0.11.0"

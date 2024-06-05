@@ -4,7 +4,11 @@ use petgraph::{graph::NodeIndex, stable_graph::StableGraph};
 use rust_sugiyama::{self, CrossingMinimization, RankingType};
 use svg::node::element::Group;
 
-use crate::{edge::Edge, node::Node, render::ToSvg, Position};
+use crate::{
+    edge::Edge,
+    node::Node,
+    render::{measure_text_width, ToSvg},
+};
 
 pub(crate) struct Graph {
     nodes: Vec<Node>,
@@ -14,12 +18,30 @@ impl Graph {
     pub fn new(nodes: Vec<Node>) -> Self {
         Graph { nodes }
     }
+
+    pub fn get_size(&self) -> (f32, f32) {
+        let (mut width, mut height) = (100.0, 100.0);
+
+        for node in self.nodes.iter() {
+            match (node.position, node.size) {
+                (Some(position), Some(size)) => {
+                    let (x, y) = position;
+                    let (w, h) = size;
+                    width = f32::max(x as f32 + w, width);
+                    height = f32::max(y as f32 + h, height);
+                }
+                _ => (),
+            }
+        }
+
+        (width, height)
+    }
 }
 
 impl ToSvg<Group> for Graph {
-    fn to_svg(&self) -> svg::node::element::Group {
+    fn to_svg(&mut self) -> svg::node::element::Group {
         let mut group = svg::node::element::Group::new().set("id", "graph");
-        for node in self.nodes.iter() {
+        for node in self.nodes.iter_mut() {
             group = group.add(node.to_svg());
         }
         group.into()
@@ -43,9 +65,14 @@ impl GraphBuilder {
         let mut raw_graph = StableGraph::new();
         let mut node_indexes: HashMap<String, NodeIndex> = HashMap::new();
 
+        // TODO: Set up minimum node spacing
+        let mut max_width = 50.0;
+        let spacing = 1.5;
+
         for node in self.node_map.values() {
             let node_id = node.id.clone();
             node_indexes.insert(node.id.clone(), raw_graph.add_node(node_id));
+            max_width = f32::max(max_width, node.max_text_width());
         }
         for ((source_id, target_id), edge) in self.edge_map.iter() {
             let source_index = node_indexes.get(source_id);
@@ -60,7 +87,7 @@ impl GraphBuilder {
         }
 
         let layouts = rust_sugiyama::from_graph(&raw_graph)
-            .vertex_spacing(125)
+            .vertex_spacing((max_width * spacing) as usize)
             .minimum_length(1)
             .crossing_minimization(CrossingMinimization::Barycenter)
             .layering_type(RankingType::MinimizeEdgeLength)
@@ -80,7 +107,7 @@ impl GraphBuilder {
         for (positions, _, _) in layouts {
             for (node_id, position) in positions {
                 if let Some(node) = self.node_map.get_mut(node_id) {
-                    node.set_position(position);
+                    node.position = Some((position.0, -position.1));
                 }
             }
         }

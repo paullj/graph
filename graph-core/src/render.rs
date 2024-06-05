@@ -1,38 +1,25 @@
-use resvg::usvg::{Node::Text as UText, Options, Tree};
-use svg::{node::element::Text as TextElement, Document, Node};
+use rusttype::{Font, Scale};
+use svg::Node;
 
 pub(crate) trait ToSvg<T>
 where
     T: Into<Box<dyn Node>>,
 {
-    fn to_svg(&self) -> T;
+    fn to_svg(&mut self) -> T;
 }
 
-pub(crate) fn _measure_text(content: &str, font_size: f32) -> (f32, f32) {
-    let text = TextElement::new(content)
-        .set("id", "text")
-        .set("x", 0)
-        .set("y", 0)
-        .set("font-family", "monospace")
-        .set("font-size", font_size);
+pub(crate) fn measure_text_width(content: &str, font_size: f32) -> f32 {
+    // Load the font
+    let font_data = include_bytes!("../fonts/SpaceMono-Regular.ttf");
+    let font = Font::try_from_bytes(font_data as &[u8]).unwrap();
 
-    let document = Document::new()
-        .set("width", 100)
-        .set("height", 100)
-        .add(text);
-    let svg_string = document.to_string();
-    println!("{}", svg_string);
-    let opt = Options::default();
-    let tree = Tree::from_str(&svg_string, &opt).unwrap();
+    let scale = Scale::uniform(font_size);
 
-    println!("{:?}", tree);
-    if let Some(node) = tree.root().children().first() {
-        println!("{:?}", node);
-        if let UText(text) = &*node {
-            let bbox = text.bounding_box();
-            return (bbox.width(), bbox.height());
-        }
-    }
+    // Calculate the width of the text
+    let width = font
+        .glyphs_for(content.chars())
+        .map(|g| g.scaled(scale).h_metrics().advance_width)
+        .sum::<f32>();
 
-    (0.0, 0.0)
+    width
 }

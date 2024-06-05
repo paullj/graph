@@ -1,4 +1,7 @@
-use crate::{parser::Rule, render::ToSvg, Position};
+use crate::{
+    parser::Rule,
+    render::{measure_text_width, ToSvg},
+};
 use pest::iterators::Pair;
 use svg::node::element::{Group, Rectangle, Text};
 
@@ -8,12 +11,7 @@ pub(crate) struct Node {
     pub label: Option<String>,
     pub shape: NodeShape,
     pub position: Option<(isize, isize)>,
-}
-
-impl Position for Node {
-    fn set_position(&mut self, position: (isize, isize)) {
-        self.position = Some(position);
-    }
+    pub size: Option<(f32, f32)>,
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -42,20 +40,31 @@ impl Node {
             label: None,
             shape: NodeShape::Empty,
             position: None,
+            size: None,
         }
+    }
+
+    pub fn max_text_width(&self) -> f32 {
+        let mut max_text_width = measure_text_width(&self.id, 8.0);
+
+        if let Some(label) = &self.label {
+            let label_width = measure_text_width(&label, 12.0);
+            max_text_width = f32::max(max_text_width, label_width);
+        }
+        max_text_width
     }
 }
 
 impl ToSvg<Rectangle> for NodeShape {
-    fn to_svg(&self) -> Rectangle {
+    fn to_svg(&mut self) -> Rectangle {
         let base = Rectangle::new()
-            .set("fill", "#D9D9D9")
-            .set("stroke", "black")
-            .set("stroke-width", 2);
+            .set("fill", "#FBFCFC")
+            .set("stroke", "#E2E6EA")
+            .set("stroke-width", 1);
 
         match self {
-            NodeShape::Rounded => base.set("rx", 20),
-            NodeShape::Square => base.set("rx", 10),
+            NodeShape::Rounded => base.set("rx", 10),
+            NodeShape::Square => base.set("rx", 2),
             NodeShape::Triangle => base,
             NodeShape::Empty => Rectangle::new(),
         }
@@ -63,39 +72,39 @@ impl ToSvg<Rectangle> for NodeShape {
 }
 
 impl ToSvg<Group> for Node {
-    fn to_svg(&self) -> Group {
-        const MARGIN: f32 = 10.0;
-
+    fn to_svg(&mut self) -> Group {
         let id_string = self.id.clone();
 
-        // let (id_width, id_height) = measure_text(id_string.as_str(), 12.0);
-
-        let (_x, _y) = match self.position {
-            Some((x, y)) => (x, y),
+        let padding_x = 10.0;
+        let (x, y) = match self.position {
+            Some(position) => position,
             None => (0, 0),
         };
 
+        let max_text_width = self.max_text_width();
+
+        self.size = Some((max_text_width as f32 + padding_x * 2.0, 50.0));
+
         let id = Text::new(id_string)
-            .set("font-family", "monospace")
-            .set("font-size", 10)
-            .set("text-anchor", "left");
+            .set("font-size", "8px")
+            .set("text-anchor", "left")
+            .set("x", padding_x)
+            .set("y", 8);
 
         let shape = self
             .shape
             .to_svg()
-            .set("width", 100.0 + MARGIN * 2.0)
-            .set("height", 20.0 + MARGIN * 2.0);
+            .set("width", max_text_width)
+            .set("height", 50);
 
         let mut group = Group::new().set("id", self.id.clone()).add(shape).add(id);
-        if let Some((x, y)) = self.position {
-            group = group.set("transform", format!("translate({},{})", x, -y));
-        }
+        group = group.set("transform", format!("translate({},{})", x, y));
+
         if let Some(label) = self.label.clone() {
             let label_text = Text::new(label)
-                .set("font-family", "monospace")
-                .set("font-size", 12)
-                .set("x", MARGIN * 2.0)
-                .set("y", MARGIN * 1.5)
+                .set("font-size", "12px")
+                .set("x", padding_x)
+                .set("y", 20)
                 .set("text-anchor", "left");
             group = group.add(label_text);
         }
