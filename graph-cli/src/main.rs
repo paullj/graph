@@ -1,6 +1,8 @@
 use anyhow::{Context, Result};
 use clap::{Parser, ValueEnum};
 use graph_core;
+use std::fs;
+use tempfile::Builder;
 
 /// Search for a pattern in a file and display the lines that contain it.
 #[derive(Parser, Debug)]
@@ -29,12 +31,30 @@ enum OutputFormat {
 fn main() -> Result<()> {
     let args = Arguments::parse();
 
-    let content = std::fs::read_to_string(&args.input_path)
+    let content = fs::read_to_string(&args.input_path)
         .with_context(|| format!("could not read file `{}`", args.input_path.display()))?;
 
     let test = graph_core::generate_graph(&content);
     match test {
-        Ok(graph) => println!("{graph}"),
+        Ok(graph) => {
+            // Create a temporary file
+            let temp_file = Builder::new()
+                .suffix(".svg")
+                .tempfile()
+                .with_context(|| "Could not create temporary file")?;
+            // Write the graph to the temporary file
+            fs::write(temp_file.path(), graph)?;
+            // Open the temporary file in the browser
+            let output_path = temp_file
+                .path()
+                .to_str()
+                .with_context(|| "Could not convert path to string")?;
+            // Open the file in the browser
+            let _ = webbrowser::open(output_path)
+                .with_context(|| "Could not open graph with browser")?;
+            // wait for 1s to allow the browser to open
+            std::thread::sleep(std::time::Duration::from_secs(1));
+        }
         Err(error) => eprintln!("{error}"),
     }
 

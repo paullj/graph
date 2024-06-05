@@ -15,3 +15,5 @@ anyhow = "1.0.86"
 clap = { version = "4.5.4", features = ["derive"] }
 colored = "2.1.0"
 graph_core = { path = "../graph-core" }
+tempfile = "3.2.0"
+webbrowser = "1.0.0"
