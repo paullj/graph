@@ -1,0 +1,22 @@
+[package]
+name = "graph_core"
+description = "An opionated concise node graph DSL and renderer"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+pest = "*"
+pest_derive = { version = "*", features = ["grammar-extras"] }
+petgraph = "*"
+resvg = "0.42.0"
+rust-sugiyama = "0.2.0"
+svg = "*"
+
+[dev-dependencies]
+rstest = "0.11.0"

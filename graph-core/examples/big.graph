@@ -1,0 +1,76 @@
+graph down
+  a[Root 1]
+  b[Root 2]
+  c[Root 3]
+  a --> d(Node 1)
+  a --> e(Node 2)
+  b --> f(Node 3)
+  b --> g(Node 4)
+  c --> h(Node 5)
+  c --> i(Node 6)
+  d --> j(Node 7)
+  e --> j
+  f --> k(Node 8)
+  g --> k
+  h --> l(Node 9)
+  i --> l
+  j --> m(Node 10)
+  k --> m
+  l --> m
+  m --> n(Node 11)
+  n --> o(Node 12)
+  o --> p(Node 13)
+  p --> q(Node 14)
+  q --> r(Node 15)
+  r --> s(Node 16)
+  s --> t(Node 17)
+  t --> u(Node 18)
+  u --> v(Node 19)
+  v --> w(Node 20)
+  w --> x(Node 21)
+  x --> y(Node 22)
+  y --> z(Node 23)
+  z --> aa(Node 24)
+  aa --> bb(Node 25)
+  bb --> cc(Node 26)
+  cc --> dd(Node 27)
+  dd --> ee(Node 28)
+  ee --> ff(Node 29)
+  ff --> gg(Node 30)
+  gg --> hh(Node 31)
+  hh --> ii(Node 32)
+  ii --> jj(Node 33)
+  jj --> kk(Node 34)
+  kk --> ll(Node 35)
+  ll --> mm(Node 36)
+  mm --> nn(Node 37)
+  d --> k
+  e --> l
+  f --> m
+  g --> n
+  h --> o
+  i --> p
+  j --> q
+  k --> r
+  l --> s
+  m --> t
+  n --> u
+  o --> v
+  p --> w
+  q --> x
+  r --> y
+  s --> z
+  t --> aa
+  u --> bb
+  v --> cc
+  w --> dd
+  x --> ee
+  y --> ff
+  z --> gg
+  aa --> hh
+  bb --> ii
+  cc --> jj
+  dd --> kk
+  ee --> ll
+  ff --> mm
+  gg --> nn

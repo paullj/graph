@@ -1,0 +1,21 @@
+SPACE = _{ " " | "\t" }
+NEWLINE = {"\n"}
+
+graph = { SOI ~ definition ~ statement* ~ NEWLINE* ~ EOI }
+definition = ${"graph" ~ SPACE+ ~ direction?}
+direction = {"down" | "up" | "left" | "right"}
+statement = {NEWLINE+ ~ SPACE* ~ (edge | node)}
+id = { (ASCII_ALPHANUMERIC | "_")+ }
+node = ${ id ~ (node_shape ~ node_label ~ node_shape_end)? }
+node_shape = { "(" | "[" | "{" }
+node_shape_end = _{ ")" | "]" | "}" }
+node_label = { (!node_shape_end ~ ANY)* }
+
+edge = { #source = node ~ SPACE+ ~ source_head? ~ line ~ target_head? ~ SPACE+ ~ (edge_label ~ SPACE+)? ~ #target = node }
+edge2 = { node ~ SPACE+ ~ source_head? ~ line ~ target_head? ~ SPACE+ ~ node }
+
+pipe = _{ "|" }
+edge_label = {pipe ~ (!pipe~ ANY)* ~ pipe }
+source_head = { "<" | "|" | ":"}
+target_head = { ">" | "|" | ":"}
+line = { "--" | "-." | "==" | "~~"}

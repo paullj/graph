@@ -1,0 +1,8 @@
+graph down
+  a<Not a real node> --> TEST
+  a --> |Edge Label| b(Node 1)
+  a --> c(Node 2)
+  c --> d(Node 3)
+  d --> e
+  c --> e
+  e[End]
