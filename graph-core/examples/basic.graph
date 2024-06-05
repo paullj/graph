@@ -1,0 +1,7 @@
+graph down
+  start_node[Start Node] --> then_this(Then do this)
+  then_this --> another(Another node with text)
+  start_node --> to_this(This node)
+  to_this --> the_end
+  another --> the_end
+  the_end[End Node]
