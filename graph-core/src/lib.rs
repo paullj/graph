@@ -1,5 +1,3 @@
-use std::fs;
-
 mod edge;
 mod graph;
 mod node;
@@ -22,6 +20,9 @@ pub fn generate_graph(contents: &str) -> Result<String, String> {
                 .add(graph.to_svg());
             Ok(document.to_string())
         }
-        Err(_) => Err("Error parsing file contents".to_string()),
+        Err(e) => {
+            eprintln!("{:?}", e);
+            Err(e.to_string())
+        }
     }
 }

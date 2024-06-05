@@ -1,5 +1,5 @@
 [workspace]
-members = ["graph-core", "graph-cli", "graph-python"]
+members = ["graph-core", "graph-cli", "graph-py"]
 
 [workspace.package]
 version = "0.1.0"

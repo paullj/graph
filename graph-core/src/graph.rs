@@ -1,4 +1,4 @@
-use std::{cell::Ref, collections::HashMap};
+use std::collections::HashMap;
 
 use petgraph::{graph::NodeIndex, stable_graph::StableGraph};
 use rust_sugiyama::{self, CrossingMinimization, RankingType};

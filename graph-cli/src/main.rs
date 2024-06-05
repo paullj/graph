@@ -35,7 +35,7 @@ fn main() -> Result<()> {
     let test = graph_core::generate_graph(&content);
     match test {
         Ok(graph) => println!("{graph}"),
-        Err(_) => (),
+        Err(error) => eprintln!("{error}"),
     }
 
     Ok(())

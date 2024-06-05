@@ -1,5 +1,5 @@
 [package]
-name = "graph-python"
+name = "graph-py"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true

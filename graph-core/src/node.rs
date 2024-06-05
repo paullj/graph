@@ -1,10 +1,6 @@
-use crate::{
-    parser::Rule,
-    render::{measure_text, ToSvg},
-    Position,
-};
+use crate::{parser::Rule, render::ToSvg, Position};
 use pest::iterators::Pair;
-use svg::node::element::{Element, Group, Rectangle, Text};
+use svg::node::element::{Group, Rectangle, Text};
 
 #[derive(Debug, PartialEq, Clone)]
 pub(crate) struct Node {
@@ -74,7 +70,7 @@ impl ToSvg<Group> for Node {
 
         // let (id_width, id_height) = measure_text(id_string.as_str(), 12.0);
 
-        let (x, y) = match self.position {
+        let (_x, _y) = match self.position {
             Some((x, y)) => (x, y),
             None => (0, 0),
         };

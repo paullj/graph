@@ -1,6 +1,7 @@
 use crate::edge::Edge;
 use crate::graph::{Graph, GraphBuilder};
 use crate::node::Node;
+use pest::error::Error;
 use pest::Parser;
 use pest_derive::Parser;
 
@@ -8,9 +9,15 @@ use pest_derive::Parser;
 #[grammar = "graph.pest"]
 pub struct GraphParser;
 
-pub fn parse_from_string(contents: &str) -> Result<Graph, ()> {
-    let parse_result = GraphParser::parse(Rule::graph, &contents);
-    let pairs = parse_result.unwrap().next().unwrap().into_inner();
+pub fn parse_from_string(contents: &str) -> Result<Graph, Error<Rule>> {
+    let pairs = match GraphParser::parse(Rule::graph, &contents) {
+        Ok(mut parse_result) => parse_result.next().unwrap().into_inner(),
+
+        Err(e) => {
+            return Err(e);
+        }
+    };
+
     let mut builder = GraphBuilder::new();
 
     for graph_pair in pairs {
@@ -70,9 +77,4 @@ pub fn parse_from_string(contents: &str) -> Result<Graph, ()> {
     let graph = builder.build();
 
     Ok(graph)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
 }

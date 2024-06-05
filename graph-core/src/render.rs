@@ -8,7 +8,7 @@ where
     fn to_svg(&self) -> T;
 }
 
-pub(crate) fn measure_text(content: &str, font_size: f32) -> (f32, f32) {
+pub(crate) fn _measure_text(content: &str, font_size: f32) -> (f32, f32) {
     let text = TextElement::new(content)
         .set("id", "text")
         .set("x", 0)
