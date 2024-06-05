@@ -1,0 +1,17 @@
+[package]
+name = "graph_cli"
+description = "CLI for the graph library"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.86"
+clap = { version = "4.5.4", features = ["derive"] }
+colored = "2.1.0"
+graph_core = { path = "../graph-core" }

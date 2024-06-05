@@ -1,0 +1,10 @@
+[workspace]
+members = ["graph-core", "graph-cli", "graph-python"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+authors = ["paullj <paullj1998@gmail.com.org>"]
+repository = ""
+license = "MIT"
