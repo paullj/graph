@@ -14,10 +14,9 @@ license.workspace = true
 pest = "*"
 pest_derive = { version = "*", features = ["grammar-extras"] }
 petgraph = "*"
-resvg = "0.42.0"
+resvg = { version = "0.42.0", features = ["text", "system-fonts"] }
 rust-sugiyama = "0.2.0"
 svg = "*"
-rusttype = "*"
 base64 = "0.22.1"
 
 [dev-dependencies]

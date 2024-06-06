@@ -10,7 +10,7 @@ pub(crate) struct Node {
     pub id: String,
     pub label: Option<String>,
     pub shape: NodeShape,
-    pub position: Option<(isize, isize)>,
+    pub position: Option<(f32, f32)>,
     pub size: Option<(f32, f32)>,
 }
 
@@ -45,11 +45,11 @@ impl Node {
     }
 
     pub fn max_text_width(&self) -> f32 {
-        let mut max_text_width = measure_text_width(&self.id, 8.0);
+        let (mut max_text_width, _id_text_height) = measure_text_width(&self.id, 8.0);
 
         if let Some(label) = &self.label {
-            let label_width = measure_text_width(&label, 12.0);
-            max_text_width = f32::max(max_text_width, label_width);
+            let (label_text_width, _label_text_height) = measure_text_width(&label, 12.0);
+            max_text_width = f32::max(max_text_width, label_text_width);
         }
         max_text_width
     }
@@ -73,50 +73,53 @@ impl ToSvg<Rectangle> for NodeShape {
 
 impl ToSvg<Group> for Node {
     fn to_svg(&mut self) -> Group {
-        let id_string = self.id.clone();
-
-        let padding_x = 10.0;
+        // Calculate sizes and positions for elements
+        let padding = (10.0, 5.0);
         let (x, y) = match self.position {
             Some(position) => position,
-            None => (0, 0),
+            None => (0.0, 0.0),
+        };
+        let (id_text_width, id_text_height) = measure_text_width(&self.id, 8.0);
+        let (label_text_width, label_text_height) = match &self.label {
+            Some(label) => measure_text_width(&label, 12.0),
+            None => (0.0, 0.0),
         };
 
-        let max_text_width = self.max_text_width();
+        let size = (
+            f32::max(id_text_width, label_text_width) + padding.0 * 2.0,
+            label_text_height + id_text_height + padding.1 * 2.0,
+        );
 
-        self.size = Some((max_text_width as f32 + padding_x * 2.0, 50.0));
+        // Create SVG elements for node
+        let mut group = Group::new().set("id", self.id.clone());
+        group = group.set("transform", format!("translate({},{})", x, y));
 
-        let id = Text::new(id_string)
+        let id = Text::new(&self.id)
             .set("font-size", "8px")
             .set("text-anchor", "left")
-            .set("x", padding_x)
-            .set("y", 8);
+            .set("x", padding.0)
+            .set("y", id_text_height);
 
         let shape = self
             .shape
             .to_svg()
-            .set("width", max_text_width)
-            .set("height", 50);
+            .set("width", size.0)
+            .set("height", size.1);
 
-        let mut group = Group::new().set("id", self.id.clone()).add(shape).add(id);
-        group = group.set("transform", format!("translate({},{})", x, y));
+        group = group.add(shape).add(id);
 
-        if let Some(label) = self.label.clone() {
+        if let Some(label) = &self.label {
             let label_text = Text::new(label)
                 .set("font-size", "12px")
-                .set("x", padding_x)
-                .set("y", 20)
+                .set("x", padding.0)
+                .set("y", id_text_height + label_text_height)
                 .set("text-anchor", "left");
+
             group = group.add(label_text);
         }
 
-        // if let Some(label) = self.label.clone() {
-        //     group.add(
-        //         Text::new(label)
-        //             .set("x", 50)
-        //             .set("y", 50)
-        //             .set("text-anchor", "middle"),
-        //     );
-        // }
+        self.size = Some(size);
+
         group
     }
 }

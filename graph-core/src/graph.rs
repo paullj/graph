@@ -107,7 +107,7 @@ impl GraphBuilder {
         for (positions, _, _) in layouts {
             for (node_id, position) in positions {
                 if let Some(node) = self.node_map.get_mut(node_id) {
-                    node.position = Some((position.0, -position.1));
+                    node.position = Some((position.0 as f32, -position.1 as f32));
                 }
             }
         }

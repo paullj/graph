@@ -1,4 +1,4 @@
-use rusttype::{Font, Scale};
+use resvg::usvg::{self, Options};
 use svg::Node;
 
 pub(crate) trait ToSvg<T>
@@ -8,18 +8,34 @@ where
     fn to_svg(&mut self) -> T;
 }
 
-pub(crate) fn measure_text_width(content: &str, font_size: f32) -> f32 {
-    // Load the font
-    let font_data = include_bytes!("../fonts/SpaceMono-Regular.ttf");
-    let font = Font::try_from_bytes(font_data as &[u8]).unwrap();
+use usvg::Tree;
 
-    let scale = Scale::uniform(font_size);
+pub(crate) fn measure_text_width(content: &str, font_size: f32) -> (f32, f32) {
+    let mut opt = Options::default();
+    let font_data = include_bytes!("../fonts/JetBrainsMono-Light.ttf");
+    opt.fontdb_mut().load_system_fonts();
+    opt.fontdb_mut().load_font_data(font_data.to_vec());
+    opt.font_family = "JetBrains Mono".to_string();
 
-    // Calculate the width of the text
-    let width = font
-        .glyphs_for(content.chars())
-        .map(|g| g.scaled(scale).h_metrics().advance_width)
-        .sum::<f32>();
+    let tree = match Tree::from_str(
+        format!(
+            r###"
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0"><g>
+                <text font-size="{}px">{}</text></g>
+            </svg>
+            "###,
+            font_size, content
+        )
+        .as_str(),
+        &opt,
+    ) {
+        Ok(tree) => tree,
+        Err(e) => {
+            eprintln!("Error: {}", e);
+            panic!("Failed to create SVG tree");
+        }
+    };
 
-    width
+    let root = tree.root();
+    (root.bounding_box().width(), root.bounding_box().height())
 }
