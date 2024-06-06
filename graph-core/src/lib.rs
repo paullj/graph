@@ -19,12 +19,12 @@ pub(crate) trait Position {
 pub fn generate_graph(contents: &str) -> Result<String, String> {
     match parse_from_string(&contents) {
         Ok(mut graph) => {
-            let margin = 20.0;
-            let graph_group = graph
-                .to_svg()
-                .set("transform", format!("translate({margin}, {margin})"));
+            let mut graph_group = graph.to_svg();
 
             let (width, height) = graph.get_size();
+            let margin = f32::max(20.0, f32::max(width, height) * 0.075);
+
+            graph_group = graph_group.set("transform", format!("translate({margin}, {margin})"));
 
             let font_data = include_bytes!("../fonts/SpaceMono-Regular.ttf");
             let font_data_base64 = general_purpose::STANDARD.encode(font_data);
@@ -42,9 +42,9 @@ pub fn generate_graph(contents: &str) -> Result<String, String> {
                     text {{
                         font-family: 'Space Mono';
                     }}
-                    svg {{
-                        background-image: url(\"data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='100' height='100' patternTransform='scale(0.3) rotate(0)'><rect x='0' y='0' width='100%' height='100%' fill='hsla(335,50%,99%,1)'/><path d='M11 6a5 5 0 01-5 5 5 5 0 01-5-5 5 5 0 015-5 5 5 0 015 5'  stroke-width='1' stroke='none' fill='hsla(317, 20%, 90%, 1)'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>\")
-                    }}
+                    // svg {{
+                    //     background-image: url(\"data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='100' height='100' patternTransform='scale(0.3) rotate(0)'><rect x='0' y='0' width='100%' height='100%' fill='hsla(335,50%,99%,1)'/><path d='M11 6a5 5 0 01-5 5 5 5 0 01-5-5 5 5 0 015-5 5 5 0 015 5'  stroke-width='1' stroke='none' fill='hsla(317, 20%, 90%, 1)'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>\")
+                    // }}
                     ",
                     font_data_base64
                 ))))
