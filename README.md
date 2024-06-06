@@ -1,6 +1,6 @@
 # graph (better name pending)
 
-> ℹ️ A graph layout engine and language
+> A graph layout engine and language
 
 ### Example:
 
@@ -12,6 +12,10 @@ a --> c
 c --> d
 
 ```
+
+Turns into:
+
+> Put a picture here
 
 ### Goals of this project:
 
@@ -34,3 +38,12 @@ You will need the following tools to build and run this project:
 
 - [just](https://github.com/casey/just) - A command runner for project specific commands
 - [rust](https://www.rust-lang.org/tools/install) - The rust programming language
+
+# TODO:
+
+- [ ] Render edges
+- [ ] Think of a better name
+- [ ] Semantic release?
+- [ ] Setup CI to build cli and python packages
+- [ ] Add a python library
+- [ ] Maybe split parser and layout engine into separate crates?
