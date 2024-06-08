@@ -12,11 +12,12 @@ use crate::{
 
 pub(crate) struct Graph {
     nodes: Vec<Node>,
+    edges: Vec<Edge>,
 }
 
 impl Graph {
-    pub fn new(nodes: Vec<Node>) -> Self {
-        Graph { nodes }
+    pub fn new(nodes: Vec<Node>, edges: Vec<Edge>) -> Self {
+        Graph { nodes, edges }
     }
 
     pub fn get_size(&self) -> (f32, f32) {
@@ -43,6 +44,9 @@ impl ToSvg<Group> for Graph {
         let mut group = svg::node::element::Group::new().set("id", "graph");
         for node in self.nodes.iter_mut() {
             group = group.add(node.to_svg());
+        }
+        for edge in self.edges.iter_mut() {
+            group = group.add(edge.to_svg());
         }
         group.into()
     }
@@ -111,8 +115,20 @@ impl GraphBuilder {
                 }
             }
         }
+        for ((source_id, target_id), edge) in self.edge_map.iter_mut() {
+            if let Some(source) = self.node_map.get(source_id) {
+                if let Some(target) = self.node_map.get(target_id) {
+                    let (sx, sy) = source.position.unwrap();
+                    let (tx, ty) = target.position.unwrap();
+                    edge.position = Some((sx, sy, tx, ty));
+                }
+            }
+        }
 
-        Graph::new(self.node_map.values().cloned().collect())
+        Graph::new(
+            self.node_map.values().cloned().collect(),
+            self.edge_map.values().cloned().collect(),
+        )
     }
 
     pub fn insert_node(&mut self, node: Node) -> &mut Self {

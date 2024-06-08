@@ -1,16 +1,25 @@
 use pest::iterators::Pair;
+use svg::node::element::{Group, Line};
 
 use crate::parser::Rule;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
+
 pub(crate) struct Edge {
+    /// The label of the edge
     pub label: Option<String>,
+    /// The line style of the edge --, -., ==, ~~
     pub line: EdgeLine,
+    /// The source head of the edge <--, --|, --, --:
     pub source_head: EdgeHead,
+    /// The target head of the edge -->, --|, --, --:
     pub target_head: EdgeHead,
+    /// The position of the edge label in the format (x1, y1, x2, y2)
+    pub position: Option<(f32, f32, f32, f32)>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
+
 pub(crate) enum EdgeLine {
     Thin,
     Dotted,
@@ -18,7 +27,8 @@ pub(crate) enum EdgeLine {
     Wavy,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
+
 pub(crate) enum EdgeHead {
     Left,
     Right,
@@ -57,7 +67,27 @@ impl Edge {
             line: EdgeLine::Thin,
             source_head: EdgeHead::None,
             target_head: EdgeHead::None,
+            position: None,
         }
+    }
+
+    pub fn to_svg(&self) -> Group {
+        let position = match self.position {
+            Some(position) => position,
+            None => (0.0, 0.0, 0.0, 0.0),
+        };
+
+        let group = Group::new().add(
+            Line::new()
+                .set("x1", position.0)
+                .set("y1", position.1)
+                .set("x2", position.2)
+                .set("y2", position.3)
+                .set("stroke", "black")
+                .set("stroke-width", 1),
+        );
+
+        group
     }
 }
 
