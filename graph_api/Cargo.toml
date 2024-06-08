@@ -1,6 +1,6 @@
 [package]
 name = "graph_api"
-description = "An opionated concise node graph DSL and renderer"
+description = "An API for the graph"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -15,7 +15,9 @@ axum = "0.7.4"
 shuttle-axum = "0.45.0"
 shuttle-runtime = "0.45.0"
 tokio = "1.28.2"
+graph_core = { path = "../graph_core" }
+serde = "1.0.203"
 
 
 [dev-dependencies]
-rstest = "0.11.0"
+rstest = "0.21.0"

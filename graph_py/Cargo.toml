@@ -19,4 +19,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = { version = "0.21.2", features = ["extension-module"] }
-graph_core = { path = "../graph-core" }
+graph_core = { path = "../graph_core" }
