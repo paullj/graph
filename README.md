@@ -41,7 +41,11 @@ You will need the following tools to build and run this project:
 
 # TODO:
 
-- [ ] Render edges
+- [x] Render edges
+- [ ] Render markers on edges
+- [ ] Render edge types
+- [ ] Truncate edges to node size
+- [ ] Add colours to nodes and edges
 - [ ] Think of a better name
 - [ ] Semantic release?
 - [ ] Setup CI to build cli and python packages

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <clipPath id="clip">
+      <rect width="99" height="59" x="0.5" y="0.5" rx="7.5" />
+    </clipPath>
+    <style>
+      svg .node {
+        filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.15));
+      }
+    </style>
+
+  </defs>
+
+  <g transform="translate(32, 32)" class="node">
+    <rect width="100" height="48" stroke-width="1" rx="8" fill="#fcf9fa" stroke="#cecace">
+    </rect>
+    <rect x="0.5" width="99" height="16" y="0.5" fill="#f5eef1" clip-path="url(#clip)">
+    </rect>
+    <line x1="0" x2="100" y1="16" y2="16" stroke-width="1" stroke="#cecace" />
+    <text x="10" y="10" font-size="6px" fill="gray" font-family="monospace" font-weight="500">
+      abc123
+    </text>
+    <text x="10" y="32" font-size="8px" fill="black" font-family="sans-serif" font-weight="300">
+      The label of this node
+    </text>
+  </g>
+
+
+  <g transform="translate(128, 128)" class="node">
+    <rect width="100" height="48" stroke-width="1" rx="8" fill="#fcf9fa" stroke="#cecace">
+    </rect>
+    <rect x="0.5" width="99" height="16" y="0.5" fill="#f5eef1" clip-path="url(#clip)">
+    </rect>
+    <line x1="0" x2="100" y1="16" y2="16" stroke-width="1" stroke="#cecace" />
+    <text x="10" y="10" font-size="6px" fill="gray" font-family="monospace" font-weight="500">
+      xyz987
+    </text>
+    <text x="10" y="32" font-size="8px" fill="black" font-family="sans-serif" font-weight="300">
+      Second label
+    </text>
+  </g>
+
+  <defs>
+    <marker id="right-arrow" markerWidth="5" markerHeight="5" refX="0" refY="2.5" orient="auto" fill="#5d5b5d">
+      <polygon points="0 0, 5 2.5, 0 5" />
+    </marker>
+    <marker id="left-arrow" markerWidth="5" markerHeight="5" refX="5" refY="2.5" orient="auto" fill="#5d5b5d">
+      <polygon points="5 0, 0 2.5, 5 5" />
+    </marker>
+  </defs>
+
+  <line x1="106" y1="81" x2="149" y2="120" stroke-width="2" stroke="#5d5b5d" marker-end="url(#right-arrow)" />
+
+
+</svg>
