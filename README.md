@@ -15,7 +15,7 @@ c --> d
 
 Turns into:
 
-> Put a picture here
+> Put a picture here when it looks less terrible
 
 ### Goals of this project:
 
@@ -24,13 +24,15 @@ Turns into:
 - Expressive enough to represent many graphs
 - Renders graphs that look nice
 - Fast enough to render large graphs
-- Portable enough to run as a CLI, rust library, python library, or in a web browser
+- Run as a CLI, rust library, python library, or in a web browser
 
 ### Packages:
 
-- `graph-core`: The parser and layout engine
-- `graph-cli`: A command line interface for rendering graphs
-- `graph-py`: A python library for rendering graphs
+- `graph_core`: The parser and layout engine
+- `graph_cli`: A command line interface for rendering graphs
+- `graph_api`: API for getting SVGs from graphs
+- `graph_editor`: Web app for graph_core (TODO)
+- `graph_py`: A python library for graph_core (TODO)
 
 ### Development
 
@@ -38,16 +40,15 @@ You will need the following tools to build and run this project:
 
 - [just](https://github.com/casey/just) - A command runner for project specific commands
 - [rust](https://www.rust-lang.org/tools/install) - The rust programming language
+- [node](https://nodejs.org/en/download/) - The node.js runtime
+- [pnpm](https://pnpm.io/installation) - A package manager for node.js
 
 # TODO:
 
 - [x] Render edges
 - [ ] Render markers on edges
 - [ ] Render edge types
-- [ ] Truncate edges to node size
+- [ ] Make edges not overlap nodes
 - [ ] Add colours to nodes and edges
 - [ ] Think of a better name
-- [ ] Semantic release?
-- [ ] Setup CI to build cli and python packages
-- [ ] Add a python library
 - [ ] Maybe split parser and layout engine into separate crates?
