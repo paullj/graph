@@ -31,7 +31,7 @@ Turns into:
 - `graph_core`: The parser and layout engine
 - `graph_cli`: A command line interface for rendering graphs
 - `graph_api`: API for getting SVGs from graphs
-- `graph_editor`: Web app for graph_core (TODO)
+- `graph_app`: Web app for graph_core (TODO)
 - `graph_py`: A python library for graph_core (TODO)
 
 ### Development
