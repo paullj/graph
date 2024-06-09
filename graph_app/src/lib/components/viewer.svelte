@@ -38,18 +38,32 @@
 </script>
 
 <div class="relative rounded-lg border-2 w-full h-full overflow-hidden">
-	<div class="absolute right-2 bottom-2 z-10">
+	<div class="absolute right-2 bottom-2 z-10 space-y-2 flex flex-col justify-end items-center">
 		{#if fetching}
-			<span transition:fade={{ duration: 100 }}> fetching </span>
+			<span transition:fade={{ duration: 100 }}>
+				<div class="i-teenyicons:loader-outline w-4 h-4 animate-spin"></div>
+			</span>
 		{/if}
-		<input type="range" name="" id="" min="0.125" max="4" step="0.1" bind:value={scale} />
 		<button
 			onclick={() => {
 				scale = 1;
 				panX = 0;
 				panY = 0;
-			}}>Reset</button
+			}}
 		>
+			<div class="i-teenyicons:home-outline w-4 h-4"></div>
+		</button>
+		<input
+			type="range"
+			name=""
+			id=""
+			min="0.125"
+			max="4"
+			step="0.1"
+			bind:value={scale}
+			class="bg-gray-200 appearance-none rounded-full"
+			style="writing-mode: vertical-lr; direction: rtl; vertical-align: middle;"
+		/>
 	</div>
 	<div
 		use:panZoom={{ panX, panY, scale }}
