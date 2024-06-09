@@ -1,12 +1,12 @@
 use axum::{
     http::StatusCode,
     routing::{get, post},
-    Json, Router,
+    Router,
 };
-use serde::{Deserialize, Serialize};
+use tower_http::services::ServeDir;
 
-async fn hello_world() -> &'static str {
-    "Hello, world!"
+async fn status() -> &'static str {
+    "Ok!"
 }
 
 async fn graph(body: String) -> (StatusCode, String) {
@@ -19,8 +19,9 @@ async fn graph(body: String) -> (StatusCode, String) {
 #[shuttle_runtime::main]
 async fn main() -> shuttle_axum::ShuttleAxum {
     let router = Router::new()
-        .route("/", get(hello_world))
-        .route("/graph", post(graph));
+        .nest_service("/", ServeDir::new("build"))
+        .route("/api", get(status))
+        .route("/api/graph", post(graph));
 
     Ok(router.into())
 }

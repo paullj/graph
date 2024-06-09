@@ -10,7 +10,7 @@
 	});
 
 	const post_graph = debounce(async (contents: string) => {
-		const res = await fetch('http://localhost:8000/graph', {
+		const res = await fetch('http://localhost:5173/api/graph', {
 			method: 'POST',
 			body: contents
 		});

@@ -7,6 +7,11 @@ export default defineConfig({
 		sveltekit(),
 		windicss(),
 	],
+	server: {
+		proxy: {
+			'/api': 'http://localhost:8000/api'
+		}
+	},
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
 	}
