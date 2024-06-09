@@ -20,7 +20,7 @@ pub(crate) fn measure_text_width(content: &str, font_size: f32) -> (f32, f32) {
     let tree = match Tree::from_str(
         format!(
             r###"
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0"><g>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 64"><g>
                 <text font-size="{}px">{}</text></g>
             </svg>
             "###,
