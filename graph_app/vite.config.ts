@@ -1,11 +1,17 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vitest/config';
-import windicss from 'vite-plugin-windicss'
+import unocss from 'unocss/vite'
+import extractorSvelte from '@unocss/extractor-svelte'
+
 
 export default defineConfig({
 	plugins: [
+		unocss({
+			extractors: [
+				extractorSvelte()
+			]
+		}),
 		sveltekit(),
-		windicss(),
 	],
 	server: {
 		proxy: {

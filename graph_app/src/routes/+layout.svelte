@@ -1,10 +1,13 @@
 <script lang="ts">
-	import 'virtual:windi.css';
+	import 'virtual:uno.css';
+	import '@unocss/reset/tailwind.css';
 
 	import { browser } from '$app/environment';
-	if (browser) import('virtual:windi-devtools');
+	if (browser) import('virtual:unocss-devtools');
 
 	let { children } = $props();
 </script>
 
-{@render children()}
+<div class="w-screen h-screen">
+	{@render children()}
+</div>
