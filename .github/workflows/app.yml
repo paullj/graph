@@ -1,10 +1,12 @@
 name: app
+
 on:
   # Trigger the workflow every time you push to the `main` branch
   push:
     branches: [main]
   # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
+
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -62,8 +64,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: build
-        working-directory: ./graph_app
+          path: ./graph_app/build
 
   # Deploy job
   deploy:
