@@ -59,19 +59,17 @@ pub fn generate_graph(contents: &str) -> Result<String, String> {
                         .add(left_arrow)
                         .add(right_arrow)
                         .add(Style::new(format!(
-                    "@font-face {{
+                            "@font-face {{
                         font-family: 'JetBrains Mono';
                         src: url(data:font/ttf;base64,{}) format('truetype');
                     }}
                     text {{
                         font-family: 'JetBrains Mono';
                     }}
-                    svg {{
-                        background-image: url(\"data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='100' height='100' patternTransform='scale(0.3) rotate(0)'><rect x='0' y='0' width='100%' height='100%' fill='hsla(335,50%,99%,1)'/><path d='M11 6a5 5 0 01-5 5 5 5 0 01-5-5 5 5 0 015-5 5 5 0 015 5'  stroke-width='1' stroke='none' fill='hsla(317, 20%, 90%, 1)'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>\")
-                    }}
                     ",
-                    font_data_base64
-                ))))
+                            font_data_base64
+                        ))),
+                )
                 .add(graph_group);
 
             // background-image:
