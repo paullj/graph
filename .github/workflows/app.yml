@@ -50,7 +50,7 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-        working-directory: ./graph_app
+        working-directory: graph_app
 
   build:
     needs: setup
@@ -58,13 +58,13 @@ jobs:
     steps:
       - name: Build
         run: pnpm build
-        working-directory: ./graph_app
+        working-directory: graph_app
 
-      - name: Release Artifcat
+      - name: Release Build Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: build
-          path: ./graph_app/build
+          name: app-build
+          path: graph_app/build
 
   # Deploy job
   deploy:
