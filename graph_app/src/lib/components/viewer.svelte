@@ -28,7 +28,8 @@
 			method: 'POST',
 			body: contents.trim(),
 			headers: {
-				'Content-Type': 'text/plain'
+				'Content-Type': 'text/plain',
+				Accept: 'application/svg+xml'
 			}
 		});
 		clearTimeout(timeoutId);
