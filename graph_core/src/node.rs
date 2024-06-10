@@ -121,6 +121,24 @@ impl Node {
         }
         max_text_width
     }
+
+    pub fn calculate_size(&mut self) {
+        let padding = (10.0, 5.0);
+        let id_font_size = 6.0;
+        let label_font_size = 8.0;
+        let (id_text_width, id_text_height) = measure_text_width(&self.id, id_font_size);
+        let (label_text_width, label_text_height) = match &self.label {
+            Some(label) => measure_text_width(&label, label_font_size),
+            None => (0.0, 0.0),
+        };
+
+        let size = (
+            f32::max(id_text_width, label_text_width) + padding.0 * 2.0,
+            label_text_height + id_text_height + padding.1 * 2.0,
+        );
+
+        self.size = Some(size);
+    }
 }
 
 impl ToSvg<Group> for Node {
@@ -144,10 +162,9 @@ impl ToSvg<Group> for Node {
             label_text_height + id_text_height + padding.1 * 2.0,
         );
 
-        let mut group = Group::new().set("id", self.id.clone()).set(
-            "transform",
-            format!("translate({},{})", x - size.0 / 2.0, y - size.1 / 2.0),
-        );
+        let mut group = Group::new()
+            .set("id", self.id.clone())
+            .set("transform", format!("translate({},{})", x, y));
 
         let id = Text::new(&self.id)
             .set("font-size", format!("{}px", id_font_size))
@@ -160,7 +177,11 @@ impl ToSvg<Group> for Node {
 
         group = group.add(shape).add(id).set(
             "transform",
-            format!("translate({}, {})", x - size.0 / 2.0, y - size.1 / 2.0),
+            format!(
+                "translate({}, {})",
+                x - size.0 / 2000.0,
+                y - size.1 / 20000.0
+            ),
         );
 
         if let Some(label) = &self.label {

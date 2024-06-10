@@ -5,9 +5,9 @@ use rust_sugiyama::{self, CrossingMinimization, RankingType};
 use svg::node::element::Group;
 
 use crate::{
-    edge::Edge,
+    edge::{self, Edge},
     node::Node,
-    render::{measure_text_width, ToSvg},
+    render::ToSvg,
 };
 
 pub(crate) struct Graph {
@@ -112,6 +112,7 @@ impl GraphBuilder {
             for (node_id, position) in positions {
                 if let Some(node) = self.node_map.get_mut(node_id) {
                     node.position = Some((position.0 as f32, -position.1 as f32));
+                    node.calculate_size();
                 }
             }
         }
@@ -119,8 +120,35 @@ impl GraphBuilder {
             if let Some(source) = self.node_map.get(source_id) {
                 if let Some(target) = self.node_map.get(target_id) {
                     let (sx, sy) = source.position.unwrap();
+                    let (sw, sh) = source.size.unwrap();
                     let (tx, ty) = target.position.unwrap();
-                    edge.position = Some((sx, sy, tx, ty));
+                    let (tw, th) = target.size.unwrap();
+
+                    let source_head_offset = match edge.source_head {
+                        edge::EdgeHead::Left | edge::EdgeHead::Right => 7.5,
+                        _ => 3.0,
+                    };
+                    let target_head_offset = match edge.target_head {
+                        edge::EdgeHead::Left | edge::EdgeHead::Right => 7.5,
+                        _ => 3.0,
+                    };
+
+                    // Calculate the direction of the edge
+                    let dx = tx - sx - f32::abs(source_head_offset - target_head_offset);
+                    let dy = ty - sy - f32::abs(source_head_offset - target_head_offset);
+                    let length = (dx * dx + dy * dy).sqrt();
+
+                    // Normalize the direction
+                    let dx = dx / length;
+                    let dy = dy / length;
+
+                    // Calculate the new start and end positions
+                    let start_x = sx + sw / 2.0 + dx * (sw / 2.0 + source_head_offset);
+                    let start_y = sy + sh / 2.0 + (dy * sh / 2.0 + source_head_offset);
+                    let end_x = tx + tw / 2.0 - (dx * tw / 2.0 + target_head_offset);
+                    let end_y = ty + th / 2.0 - (dy * th / 2.0 + target_head_offset);
+
+                    edge.position = Some((start_x, start_y, end_x, end_y));
                 }
             }
         }

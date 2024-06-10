@@ -60,6 +60,18 @@ impl From<&str> for EdgeLine {
     }
 }
 
+impl EdgeHead {
+    fn into_id(&self) -> &'static str {
+        match self {
+            EdgeHead::Left => "url(#left-arrow)",
+            EdgeHead::Right => "url(#right-arrow)",
+            EdgeHead::Straight => "",
+            EdgeHead::Dot => "",
+            _ => "",
+        }
+    }
+}
+
 impl Edge {
     fn new() -> Self {
         Self {
@@ -77,15 +89,24 @@ impl Edge {
             None => (0.0, 0.0, 0.0, 0.0),
         };
 
-        let group = Group::new().add(
+        let mut group = Group::new().add(
             Line::new()
                 .set("x1", position.0)
                 .set("y1", position.1)
                 .set("x2", position.2)
                 .set("y2", position.3)
-                .set("stroke", "black")
+                .set("stroke", "#5d5b5d")
                 .set("stroke-width", 1),
         );
+
+        if self.source_head != EdgeHead::None {
+            let head = self.source_head.into_id();
+            group = group.set("marker-end", head);
+        }
+        if self.target_head != EdgeHead::None {
+            let head = self.target_head.into_id();
+            group = group.set("marker-end", head);
+        }
 
         group
     }
