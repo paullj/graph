@@ -52,3 +52,4 @@ You will need the following tools to build and run this project:
 - [ ] Add colours to nodes and edges
 - [ ] Think of a better name
 - [ ] Maybe split parser and layout engine into separate crates?
+- [ ] ie maybe rate limiting or something unless its via the web app
