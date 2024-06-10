@@ -24,7 +24,7 @@
 		const timeoutId = setTimeout(() => {
 			fetching = true;
 		}, delay);
-		const res = await fetch('http://localhost:5173/api/graph', {
+		const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/graph`, {
 			method: 'POST',
 			body: contents.trim()
 		});
