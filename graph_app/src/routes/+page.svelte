@@ -2,7 +2,7 @@
 	import Editor from '$lib/components/editor.svelte';
 	import Viewer from '$lib/components/viewer.svelte';
 
-	let contents = $state('graph down\n  a --> b');
+	let contents = $state('graph down\n  a[Node A] --> b[Node B]\n  c[Node C] --> b');
 </script>
 
 <div class="w-full h-full flex space-x-4">
