@@ -57,9 +57,8 @@ jobs:
         working-directory: graph_app
 
       - name: Release Build Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: app-build
           path: graph_app/build
 
   # Deploy job
@@ -83,5 +82,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          artifact_name: app-build
