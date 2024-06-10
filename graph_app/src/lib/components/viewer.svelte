@@ -20,13 +20,16 @@
 	});
 
 	const fetch_graph = debounce(async (contents: string) => {
-		const delay = 100;
+		const delay = 200;
 		const timeoutId = setTimeout(() => {
 			fetching = true;
 		}, delay);
 		const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/graph`, {
 			method: 'POST',
-			body: contents.trim()
+			body: contents.trim(),
+			headers: {
+				'Content-Type': 'text/plain'
+			}
 		});
 		clearTimeout(timeoutId);
 
